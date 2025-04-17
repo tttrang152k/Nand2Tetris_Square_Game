@@ -1,0 +1,95 @@
+/** Represents a movable square */
+class Square {
+    field int x, y, size;
+
+    constructor Square new(int initX, int initY, int initSize) {
+        let x = initX;
+        let y = initY;
+        let size = initSize;
+        do draw();
+        return this;
+    }
+
+    method void draw() {
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x, y, x + size, y + size);
+        return;
+    }
+
+    method void erase() {
+        do Screen.setColor(false);
+        do Screen.drawRectangle(x, y, x + size, y + size);
+        return;
+    }
+
+    method void moveUp() {
+        if (y > 1) {
+            do erase();
+            let y = y - 2;
+            do draw();
+        }
+        return;
+    }
+
+    method void moveDown() {
+        if ((y + size) < 254) {
+            do erase();
+            let y = y + 2;
+            do draw();
+        }
+        return;
+    }
+
+    method void moveLeft() {
+        if (x > 1) {
+            do erase();
+            let x = x - 2;
+            do draw();
+        }
+        return;
+    }
+
+    method void moveRight() {
+        if ((x + size) < 510) {
+            do erase();
+            let x = x + 2;
+            do draw();
+        }
+        return;
+    }
+
+    method void incSize() {
+        if (((x + size) < 510) & ((y + size) < 254)) {
+            do erase();
+            let size = size + 2;
+            do draw();
+        }
+        return;
+    }
+
+    method void decSize() {
+        if (size > 4) {
+            do erase();
+            let size = size - 2;
+            do draw();
+        }
+        return;
+    }
+
+    method int getX() {
+        return x;
+    }
+
+    method int getY() {
+        return y;
+    }
+
+    method int getSize() {
+        return size;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+}

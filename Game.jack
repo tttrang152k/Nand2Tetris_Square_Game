@@ -1,0 +1,84 @@
+/** Controls the game */
+class Game {
+    field Square square;
+    field int direction;
+    field boolean running;
+
+    constructor Game new() {
+        let square = Square.new(10, 10, 20);
+        let direction = 0;
+        let running = true;
+        return this;
+    }
+
+    method void run() {
+        var char key;
+        
+        // Draw the visual cue for the winning zone
+        do Utils.drawWinZone();
+
+        while (running) {
+            let key = Keyboard.keyPressed();
+            if (key = 0) {
+                do move();
+                let key = Utils.flashIfInWinZone(square);
+                if (key = 81) { // q: quit
+                    let running = false;
+                }
+                if (key = 82) { // r: restart the game
+                    do square.dispose();
+                    let square = Square.new(10, 10, 20);
+                    let direction = 0;
+                    do Utils.drawWinZone();
+                }
+                do Sys.wait(5);
+            } else {
+                if (key = 131) {
+                    let direction = 1;
+                }
+                if (key = 133) {
+                    let direction = 2;
+                }
+                if (key = 130) {
+                    let direction = 3;
+                }
+                if (key = 132) {
+                    let direction = 4;
+                }
+                if (key = 88) { // z: decrease the square size
+                    do square.incSize();
+                }
+                if (key = 90) { // x: increase the square size
+                    do square.decSize();
+                }
+                if (key = 81) {
+                    let running = false;
+                }
+            }
+        }
+
+        return;
+    }
+
+    method void move() {
+        if (direction = 1) {
+            do square.moveUp();
+        }
+        if (direction = 2) {
+            do square.moveDown();
+        }
+        if (direction = 3) {
+            do square.moveLeft();
+        }
+        if (direction = 4) {
+            do square.moveRight();
+        }
+        return;
+    }
+
+    method void dispose() {
+        do square.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+}
